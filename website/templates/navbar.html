@@ -11,6 +11,9 @@
           <li class="nav-item">
             <a class="nav-link" href="{% url 'logout' %}">Logout</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'add_record' %}">Add Record</a>
+          </li>
           {% else %}
           <li class="nav-item">
             <a class="nav-link" href={% url 'register'%}>Register </a>
@@ -18,6 +21,7 @@
           <li class="nav-item">
             <a class="nav-link" href={% url 'home'%}>Login</a>
           </li>
+          
             {% endif %}
         </ul>
       </div>

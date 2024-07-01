@@ -6,10 +6,43 @@
 
     {% if user.is_authenticated %} <!--Checker user logged in or not-->
 
-    <h1>Hello World </h1>
+<h1>RECORDS....</h1>
+
+<table class="table table-hover table-bordered">
+  <thead class="table-dark">
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Email</th>
+      <th scope="col">Address</th>
+      <th scope="col">Zipcode</th>
+      <th scope="col">Registeration Date</th>
+      <th scope="col">Id</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    {% if records %}
+      {% for record in records %}
+      <tr>
+      <td>{{ record.first_name }}
+      {{ record.last_name }} </td>
+      <td>{{ record.email}}</td>
+      <td>{{ record.address }}</td>
+      <td>{{ record.zipcode }}</td>
+      <td>{{record.created_at}}</td>
+      <td> <a href="{% url 'record' record.id %}">{{record.id}}</td>
+        <!--Puts record id in the link   like record/1.2.3............-->
+      </tr>
+      {% endfor %}
+{% endif %}
+
+  </tr>
+</tbody>
+</table>
+
+
     {% else %}
 
-    <br>
     <h1> LOGIN </h1>
     <br>
 <!--POST DATA TO US VIA FORM AND SEND THEM BACK TO HOME PAGE-->
