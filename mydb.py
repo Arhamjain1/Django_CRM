@@ -2,8 +2,8 @@ import mysql.connector
 
 database=mysql.connector.connect(
     host='localhost',
-    user='root',
-    passwd='Arhamjain@1'
+    user='arham',
+    passwd='Jain@321'
 )
 
 #A cursor allows you to execute SQL queries, fetch data from the database, and manage the context of a fetch operation.

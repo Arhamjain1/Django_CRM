@@ -72,19 +72,31 @@ WSGI_APPLICATION = 'dcrm.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
+# https://docs.djangoprboject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'elderco',
-        'USER':'root',
-        'PASSWORD':'Arhamjain@1',
+        'USER':'arham',
+        'PASSWORD':'Jain@321',
         'HOST':'localhost',
         'PORT':3306,
     }
 }
 
+CACHE_TTL = 60 * 1500 #How long cache is stored
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://localhost:6379",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient"
+        },
+        "KEY_PREFIX": "example"
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators

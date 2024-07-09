@@ -1,0 +1,36 @@
+version: "3.9"
+services:
+  boring_ellis:
+    build:
+      context: .
+
+    ports:
+      - "8000:8000"
+  
+    depends_on:
+      - sql-container
+      - redis-container
+    volumes:
+      - .:/app/
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    command: sh -c "sleep 5 && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+
+  sql-container:
+    image: mysql
+    environment:
+      - MYSQL_DATABASE=eldercop
+      - MYSQL_ROOT_PASSWORD=Jain@321
+      - MYSQL_USER=arham
+      - MYSQL_PASSWORD=Jain@321
+
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  redis-container:
+    image: redis
+
+
+volumes:
+  mysql_data:

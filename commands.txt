@@ -1,0 +1,3 @@
+#Docker build is used to create image named python-django
+docker build --tag python-django . 
+docker run --publish 8000:8000 python-django

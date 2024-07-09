@@ -3,6 +3,17 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 from .forms import SignUpForm,AddRecordForm
 from .models import Record
+from django.core.cache import cache
+import redis
+import os
+
+# ## Connect to Redis
+# redis_host = os.getenv('REDIS_HOST', 'redis')
+# redis_port = os.getenv('REDIS_PORT', 6379)
+# redis_client = redis.Redis(host=redis_host, port=redis_port)
+
+
+
 # request is going to that webpage and requesting that webpage
 def home(request):
     #grab everything in the table and assign in record
@@ -22,7 +33,22 @@ def home(request):
 #messages.success is used to set a success message to be displayed to the user.
 
             login(request,user)
-            messages.success(request,"You have been logged in")
+# This below line creates a unique key for caching the user's login count. The key is a string that includes the user's ID. For example, if the user's ID is 5, the cache_key will be "user_login_count_5". This unique key is used to store and retrieve the login count from Redis.
+            cache_key = f"user_login_count_{user.id}"
+            login_count = cache.get(cache_key)
+            source = 'Redis'
+#This line tries to get the login count for the user from the Redis cache using the cache_key. The cache.get method returns the value associated with the key if it exists; otherwise, it returns None. The source variable is set to 'Redis' to indicate that the data is being retrieved from Redis
+#If the value does not exist (cache miss), it returns None.
+            if login_count is None:
+                # Initialize login count if not present in cache
+                login_count = 0
+                source = 'MySQL'
+
+            # Increment and save login count
+#he login_count is incremented by 1 to reflect the current login attempt. The new login_count is then saved back to the Redis cache using the cache.set method. The timeout parameter is set to 60*15, which means the login count will be cached for 15 minutes. After 15 minutes, the cache entry will expire and be removed from Redis.
+            login_count += 1
+            cache.set(cache_key, login_count, timeout=60*15)  # Cache for 15 minutes
+            messages.success(request, f"You have been logged in {login_count} times from {source}.")
             return redirect('home') #Where we have authentication true 
     
         else: #Handleing None condition
