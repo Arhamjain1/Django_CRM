@@ -77,10 +77,10 @@ WSGI_APPLICATION = 'dcrm.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'elderco',
+        'NAME': 'eldercop',
         'USER':'arham',
         'PASSWORD':'Jain@321',
-        'HOST':'localhost',
+        'HOST':'sql-container',
         'PORT':3306,
     }
 }
@@ -90,7 +90,7 @@ CACHE_TTL = 60 * 1500 #How long cache is stored
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://localhost:6379",
+        "LOCATION": "redis://redis-container:6379",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient"
         },

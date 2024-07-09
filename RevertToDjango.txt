@@ -1,0 +1,4 @@
+change host from sql-container to localhost in settings.py
+change database name from eldercop to elderco
+change reddis location from "LOCATION": "redis://redis-container:6379"
+to "LOCATION": "redis://localhost:6379"
