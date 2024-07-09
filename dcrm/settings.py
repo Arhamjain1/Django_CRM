@@ -25,7 +25,10 @@ SECRET_KEY = 'django-insecure--2dw-1i&q42#ne4$5!_4tzsr=^r3&d!acu_l$zyz@8^=ab-$*c
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# settings.py
+
+ALLOWED_HOSTS = ['192.168.49.2', 'your-domain.com', 'another-domain.com']
+
 
 
 # Application definition
@@ -80,7 +83,7 @@ DATABASES = {
         'NAME': 'eldercop',
         'USER':'arham',
         'PASSWORD':'Jain@321',
-        'HOST':'sql-container',
+        'HOST':'mysql-service',
         'PORT':3306,
     }
 }
@@ -90,7 +93,7 @@ CACHE_TTL = 60 * 1500 #How long cache is stored
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://redis-container:6379",
+        "LOCATION": "redis://redis-service:6379",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient"
         },

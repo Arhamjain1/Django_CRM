@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: django-configmap
+data:
+  MYSQL_DATABASE: eldercop 
+  REDIS_HOST: redis-service #name of the Redis service in Kubernetes
+  REDIS_PORT: '6379' #port on which the Redis service is running
