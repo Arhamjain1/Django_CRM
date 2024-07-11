@@ -27,7 +27,7 @@ DEBUG = True
 
 # settings.py
 
-ALLOWED_HOSTS = ['192.168.49.2', 'your-domain.com', 'another-domain.com']
+ALLOWED_HOSTS = ['127.0.0.1','192.168.49.2', 'your-domain.com', 'another-domain.com']
 
 
 
@@ -83,7 +83,7 @@ DATABASES = {
         'NAME': 'eldercop',
         'USER':'arham',
         'PASSWORD':'Jain@321',
-        'HOST':'mysql-service',
+        'HOST':'sql-service',
         'PORT':3306,
     }
 }

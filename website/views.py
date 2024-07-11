@@ -1,18 +1,15 @@
 from django.shortcuts import render,redirect
-from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth import authenticate,login,logout,get_user_model
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import SignUpForm,AddRecordForm
 from .models import Record
 from django.core.cache import cache
-import redis
-import os
 
 # ## Connect to Redis
 # redis_host = os.getenv('REDIS_HOST', 'redis')
 # redis_port = os.getenv('REDIS_PORT', 6379)
 # redis_client = redis.Redis(host=redis_host, port=redis_port)
-
-
 
 # request is going to that webpage and requesting that webpage
 def home(request):
@@ -86,6 +83,55 @@ def register_user(request):
         form=SignUpForm()    
         return render(request,'register.html',{'form':form})
     return render(request,'register.html',{'form':form})
+
+
+def user_list(request):
+    if not request.user.is_authenticated:
+        return redirect('home')
+    #This line assigns the User model class to the variable User
+    #User model class" in Django is a representation of the user data that is stored in the database
+    User = get_user_model()
+    #This line retrieves all the user objects from the database.
+    users = User.objects.all()
+
+    can_edit = request.user.is_superuser
+
+    return render(request, 'user_list.html', {'users': users, 'can_edit': can_edit})
+
+def add_user(request):
+    if not request.user.is_authenticated:
+        return redirect('home')
+    
+    if not request.user.is_superuser:
+        messages.error(request, "You do not have permission to add users.")
+        return redirect('user_list')
+
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "User has been added.")
+            return redirect('user_list')
+    else:
+        form = SignUpForm()
+    return render(request, 'add_user.html', {'form': form})
+
+def delete_user(request, user_id):
+    if not request.user.is_authenticated:
+        return redirect('home')
+    
+    if not request.user.is_superuser:
+        messages.error(request, "You do not have permission to delete users.")
+        return redirect('user_list')
+    #line retrieves the user model configured for the project
+    User = get_user_model()
+    try:
+        user = User.objects.get(id=user_id)
+        user.delete()
+        messages.success(request, "User has been deleted.")
+    except User.DoesNotExist:
+        messages.error(request, "User does not exist.")
+    return redirect('user_list')
 
 def customer_record(request,pk):
     if request.user.is_authenticated:
