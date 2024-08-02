@@ -44,7 +44,7 @@ DEBUG = True
 
 # settings.py
 
-ALLOWED_HOSTS = ['127.0.0.1','192.168.49.2', 'your-domain.com', 'another-domain.com']
+ALLOWED_HOSTS = ['127.0.0.1','192.168.49.2', '*', 'another-domain.com']
 
 
 
