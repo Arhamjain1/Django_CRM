@@ -9,12 +9,29 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
+# AWS S3 settings
+AWS_ACCESS_KEY_ID ='AKIAZQ3DNVE25GMJZ5VU'
+AWS_SECRET_ACCESS_KEY ='ABTT2AheavX/hlwa9RneR6mhY2FbnS9SAmCX4eXu'
+AWS_STORAGE_BUCKET_NAME = 'bhaang'
+AWS_S3_REGION_NAME = 'us-east-1'  # e.g., 'us-west-2'
+AWS_S3_SIGNATURE_VERSION = 's3v4'
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
+
+# Static files (CSS, JavaScript, Images)
+STATIC_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/static/'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+# Media files (user uploaded content)
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/media/'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -80,10 +97,10 @@ WSGI_APPLICATION = 'dcrm.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'eldercop',
+        'NAME': 'elderco',
         'USER':'arham',
         'PASSWORD':'Jain@321',
-        'HOST':'sql-service',
+        'HOST':'localhost',
         'PORT':3306,
     }
 }
@@ -93,7 +110,7 @@ CACHE_TTL = 60 * 1500 #How long cache is stored
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://redis-service:6379",
+        "LOCATION": "redis://localhost:6379",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient"
         },

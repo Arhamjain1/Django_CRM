@@ -5,6 +5,8 @@ from django.contrib import messages
 from .forms import SignUpForm,AddRecordForm
 from .models import Record
 from django.core.cache import cache
+from .utils import save_user_data_to_s3  # Import the utility function
+
 
 # ## Connect to Redis
 # redis_host = os.getenv('REDIS_HOST', 'redis')
@@ -77,6 +79,12 @@ def register_user(request):
             #If authentication is successful, this logs the user in by creating a session for them. The login function takes the current request and the authenticated user as parameters.
             login(request,user)
             messages.success(request,"You have succesfully registered.")
+            user_data = {
+                'username': user.username,
+                'email': user.email,
+                'date_joined': str(user.date_joined),
+            }
+            save_user_data_to_s3(user_data)
             return redirect('home')
     else:
         #If the request method is not POST (e.g., if the user just visited the registration page), this creates a new, empty instance of SignUpForm. This means no data is pre-filled in the form.
